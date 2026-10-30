@@ -38,6 +38,7 @@
           !/^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]+/.test(episode.url || '')) return;
       title.textContent = episode.title;
       title.href = episode.url;
+      section.querySelector('.podcast-note').innerHTML = '<a href="' + episode.url + '" target="_blank" rel="noopener noreferrer">Listen on Spotify ↗</a>';
       show.textContent = episode.show;
       if (typeof episode.artwork_url === 'string' && /^https:\/\//.test(episode.artwork_url)) {
         img.src = episode.artwork_url;
