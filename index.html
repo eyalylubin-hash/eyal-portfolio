@@ -52,6 +52,16 @@
     .about { display:grid; grid-template-columns:200px minmax(0,1fr); gap:38px; padding:62px 0 80px; }
     .about h2 { font-size:18px; letter-spacing:-.025em; margin:0; font-weight:630; }
     .about p { max-width:630px; margin:0 0 16px; font-size:15px; }
+    .currently-reading { margin-top:28px; border-top:1px solid var(--line); padding-top:21px; max-width:630px; }
+    .reading-label { margin:0 0 17px !important; color:var(--secondary); font-size:11px !important; font-weight:650; letter-spacing:.095em; text-transform:uppercase; }
+    .reading-book { display:flex; align-items:flex-start; gap:20px; }
+    .reading-cover { display:block; flex:none; width:92px; aspect-ratio:2/3; object-fit:cover; border:1px solid var(--line); border-radius:2px; background:#f0e9da; }
+    .reading-title { margin:0 0 3px; font-weight:620; font-size:16px; line-height:1.35; letter-spacing:-.02em; }
+    .reading-title a { text-decoration:none; }
+    .reading-title a:hover { text-decoration:underline; }
+    .reading-author { margin:0 0 9px !important; color:var(--secondary); font-size:13px !important; }
+    .reading-description { margin:0 !important; font-size:14px !important; line-height:1.65; }
+    @media(max-width:430px) { .reading-cover { width:78px; } .reading-book { gap:15px; } }
     .footer { border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; gap:10px; padding:24px 0 40px; font-size:13px; color:var(--secondary); }
     .footer a { color:var(--ink); }
     .footer .footer-right { display:flex; gap:20px; }
@@ -158,7 +168,7 @@
             <p class="project-type">Cross-country ride · Summer 2026</p>
           </div>
           <div class="project-main">
-            <p>A friend and I biked across the United States, from Astoria, Oregon, to my hometown of Cherry Hill, New Jersey. We covered over 3,600 miles in 53 days without a support vehicle and raised more than $16,000 for the Daniella Moffson Foundation.</p>
+            <p>A friend and I biked across the United States, from Astoria, Oregon, to my hometown of Cherry Hill, New Jersey. We covered over 5,000 miles in 53 days without a support vehicle and raised more than $16,000 for the Daniella Moffson Foundation.</p>
             <div class="links" aria-label="Mitzvah Miles links">
               <a href="https://www.instagram.com/mitzvah_miles/" target="_blank" rel="noopener noreferrer">Photos & updates on Instagram ↗</a>
               <a href="https://jewishlink.news/mitzvah-miles-spreads-chesed-across-the-us/" target="_blank" rel="noopener noreferrer">Read the story ↗</a>
@@ -214,6 +224,17 @@
         <div>
           <p>At Penn, I've become especially interested in the relationship between the mind and human behavior. I also serve as Co-President of Yavneh on Campus, helping lead a student organization active across 40 campuses.</p>
           <p>I'm graduating in May 2027 and exploring early-career opportunities in product and project management.</p>
+          <div class="currently-reading" aria-labelledby="reading-title">
+            <p class="reading-label" id="reading-title">Currently reading</p>
+            <div class="reading-book">
+              <img class="reading-cover" src="https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9780684832401/the-denial-of-death-9780684832401_hr.jpg" onerror="this.onerror=null;this.src='assets/reading/denial-of-death.svg';" alt="Cover of The Denial of Death by Ernest Becker" width="92" height="138" loading="lazy" decoding="async">
+              <div>
+                <h3 class="reading-title"><a href="https://www.simonandschuster.com/books/The-Denial-of-Death/Ernest-Becker/9780684832401" target="_blank" rel="noopener noreferrer"><em>The Denial of Death</em></a></h3>
+                <p class="reading-author">Ernest Becker · 1973</p>
+                <p class="reading-description">An exploration of how our awareness of mortality shapes human behavior and our search for meaning.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
