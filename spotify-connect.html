@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Connect Spotify — Portfolio setup</title>
+  <style>
+    :root{color-scheme:light;--ink:#222321;--muted:#646761;--line:#d9d9d4;--accent:#335b50}
+    *{box-sizing:border-box}body{font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#fbfaf8;color:var(--ink);margin:0}
+    main{max-width:660px;margin:9vh auto;padding:0 24px}h1{font-size:32px;font-weight:600;letter-spacing:-.04em;margin:0 0 10px}
+    p{margin:0 0 20px}label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+    input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:4px;font:inherit;background:white}
+    button{padding:11px 16px;border:0;border-radius:4px;background:var(--accent);color:white;font:inherit;cursor:pointer;margin-top:12px}
+    code{overflow-wrap:anywhere;background:#f0f0ec;padding:2px 4px}.muted{color:var(--muted);font-size:14px}
+    .note{padding:16px;border:1px solid var(--line);border-radius:4px;margin:24px 0}
+    #token-area{display:none}#token-area input{font-size:13px}#status{margin-top:15px;overflow-wrap:anywhere}
+    a{color:var(--accent)}small{display:block;color:var(--muted)}
+  </style>
+</head>
+<body>
+<main>
+  <p class="muted"><a href="/">← Portfolio</a> · One-time setup</p>
+  <h1>Connect Spotify</h1>
+  <p>Authorize Spotify to read only your currently playing content. Your access token stays in your browser, and this helper never sends it to your portfolio server.</p>
+  <div class="note">
+    <strong>Spotify app redirect URI</strong>
+    <p class="muted">Add this exact URL in your Spotify Developer app settings:</p>
+    <code id="redirect"></code>
+  </div>
+  <div id="start-area">
+    <label for="client-id">Spotify Client ID</label>
+    <input id="client-id" autocomplete="off" spellcheck="false" placeholder="Paste Client ID from developer.spotify.com">
+    <button id="authorize">Authorize my Spotify</button>
+  </div>
+  <div id="token-area">
+    <label for="refresh-token">Your refresh token — keep private</label>
+    <input id="refresh-token" type="password" readonly autocomplete="off">
+    <button id="copy-token">Copy token</button>
+    <p class="muted" style="margin-top:18px">In GitHub → Settings → Secrets and variables → Actions, create secrets <code>SPOTIFY_CLIENT_ID</code> (your Client ID) and <code>SPOTIFY_REFRESH_TOKEN</code> (the token above). Never commit a token to a file or send it in chat.</p>
+    <p><a href="https://github.com/eyalylubin-hash/eyal-portfolio/settings/secrets/actions" target="_blank" rel="noopener noreferrer">Open GitHub Actions secrets ↗</a></p>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+  <small>Spotify refresh tokens expire after six months. Repeat authorization when necessary.</small>
+</main>
+<script>
+(function () {
+  'use strict';
+  const redirect = location.origin + location.pathname;
+  document.getElementById('redirect').textContent = redirect;
+  const status = document.getElementById('status');
+  const showStatus = message => { status.textContent = message; };
+  const encode = bytes => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  async function challengeFor(verifier) {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+    return encode(new Uint8Array(digest));
+  }
+  document.getElementById('authorize').addEventListener('click', async () => {
+    const clientId = document.getElementById('client-id').value.trim();
+    if (!/^[0-9a-f]{32}$/i.test(clientId)) {
+      showStatus('Paste your 32-character Spotify Client ID.'); return;
+    }
+    const verifier = encode(crypto.getRandomValues(new Uint8Array(64)));
+    const state = encode(crypto.getRandomValues(new Uint8Array(16)));
+    sessionStorage.setItem('spotify-client-id', clientId);
+    sessionStorage.setItem('spotify-verifier', verifier);
+    sessionStorage.setItem('spotify-state', state);
+    const auth = new URL('https://accounts.spotify.com/authorize');
+    auth.search = new URLSearchParams({
+      response_type:'code',client_id:clientId,redirect_uri:redirect,
+      scope:'user-read-currently-playing',code_challenge_method:'S256',
+      code_challenge:await challengeFor(verifier),state
+    }).toString();
+    location.assign(auth.toString());
+  });
+  document.getElementById('copy-token').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(document.getElementById('refresh-token').value);
+      showStatus('Copied. Store it in GitHub Secrets, not in repository files.');
+    } catch (error) { showStatus('Copy failed. Select and copy the token manually.'); }
+  });
+  const qs = new URLSearchParams(location.search);
+  if (qs.has('error')) showStatus('Authorization declined: ' + qs.get('error'));
+  if (!qs.has('code')) return;
+  const clientId = sessionStorage.getItem('spotify-client-id');
+  const verifier = sessionStorage.getItem('spotify-verifier');
+  const state = sessionStorage.getItem('spotify-state');
+  history.replaceState({}, '', redirect);
+  if (!clientId || !verifier || !state || qs.get('state') !== state) {
+    showStatus('Security check failed. Start again using the same browser tab.'); return;
+  }
+  sessionStorage.removeItem('spotify-state');
+  sessionStorage.removeItem('spotify-verifier');
+  sessionStorage.removeItem('spotify-client-id');
+  showStatus('Completing Spotify authorization…');
+  fetch('https://accounts.spotify.com/api/token', {
+    method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:new URLSearchParams({
+      grant_type:'authorization_code',code:qs.get('code'),
+      redirect_uri:redirect,client_id:clientId,code_verifier:verifier
+    })
+  }).then(async response => {
+    const data = await response.json();
+    if (!response.ok || !data.refresh_token)
+      throw new Error(data.error_description || data.error || 'No refresh token returned');
+    document.getElementById('start-area').style.display='none';
+    document.getElementById('token-area').style.display='block';
+    document.getElementById('refresh-token').value=data.refresh_token;
+    showStatus('Connected! Save your Client ID and refresh token as GitHub Actions secrets.');
+  }).catch(error => showStatus('Spotify authorization failed: ' + error.message));
+})();
+</script>
+</body>
+</html>
