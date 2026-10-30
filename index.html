@@ -42,6 +42,8 @@
     .preview-header a { font-size:12px; white-space:nowrap; }
     .preview iframe { display:block; width:100%; height:520px; border:0; background:var(--white); }
     .note { font-size:12px !important; color:var(--secondary); margin-top:9px !important; }
+    .research-figure { display:block; width:100%; max-height:340px; object-fit:contain; object-position:left center; background:var(--white); border:1px solid var(--line); margin-top:26px; }
+    .research-caption { margin:9px 0 0 !important; color:var(--secondary); font-size:12px !important; }
     .trip-route { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:30px 0 0; padding:20px 0 0; border-top:1px solid var(--line); font-size:14px; font-weight:570; }
     .trip-route .arrow { color:var(--secondary); }
     .trip-context { font-size:13px; font-weight:400; color:var(--secondary); margin-left:auto; }
@@ -96,6 +98,7 @@
       <a href="#top" class="wordmark">Eyal Lubin</a>
       <nav class="nav" aria-label="Main navigation">
         <a href="#work">Work</a>
+        <a href="#research">Research</a>
         <a href="#about">About</a>
         <a href="assets/Eyal_Lubin_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
       </nav>
@@ -168,6 +171,37 @@
               <iframe id="bike-map" src="assets/mitzvah-miles-map-offline.html" title="Interactive Mitzvah Miles bicycle route map, colored by week" loading="lazy" allowfullscreen></iframe>
             </div>
             <p class="map-caption">Pan and zoom to explore the route. The map reflects recorded and estimated route segments, not necessarily every mile ridden.</p>
+          </div>
+        </article>
+      </section>
+      <section id="research" aria-labelledby="research-heading">
+        <h2 class="section-heading" id="research-heading">Research &amp; data analysis</h2>
+        <article class="project" aria-labelledby="dui-title">
+          <div>
+            <h2 id="dui-title">Alcohol Consumption &amp; DUI Fatalities</h2>
+            <p class="project-type">Research project · 2025</p>
+          </div>
+          <div class="project-main">
+            <p>I used R to compare alcohol consumption and fatalities involving impaired drivers across U.S. states. I found a positive association between beer consumption and DUI fatalities, then examined how the relationship differed for other types of alcohol.</p>
+            <div class="links"><a href="assets/research/drunk-driving/report.html" target="_blank" rel="noopener noreferrer">Read the analysis ↗</a></div>
+            <a href="assets/research/drunk-driving/report.html" target="_blank" rel="noopener noreferrer" aria-label="Read the drunk-driving analysis">
+              <img class="research-figure" src="assets/research/drunk-driving/chart.png" alt="Line chart showing changes in U.S. per-capita consumption of beer, wine, spirits and total alcohol from 1970 to 2022" loading="lazy">
+            </a>
+            <p class="research-caption">U.S. alcohol consumption by beverage type, 1970–2022. The paper also compares state-level DUI fatalities.</p>
+          </div>
+        </article>
+        <article class="project" aria-labelledby="entrepreneur-title">
+          <div>
+            <h2 id="entrepreneur-title">Education &amp; Entrepreneurship</h2>
+            <p class="project-type">Research project · 2025</p>
+          </div>
+          <div class="project-main">
+            <p>I analyzed Global Entrepreneurship Monitor data to ask whether education and personal networks are related to how easy people think it is to start a business. Across countries, average education had almost no correlation with perceived ease (r = 0.012).</p>
+            <div class="links"><a href="assets/research/entrepreneurship/report.html" target="_blank" rel="noopener noreferrer">Read the analysis ↗</a></div>
+            <a href="assets/research/entrepreneurship/report.html" target="_blank" rel="noopener noreferrer" aria-label="Read the entrepreneurship analysis">
+              <img class="research-figure" src="assets/research/entrepreneurship/chart.png" alt="Scatter plot comparing national average education levels and perceived ease of starting a business" loading="lazy">
+            </a>
+            <p class="research-caption">Country-level comparison using Global Entrepreneurship Monitor data; highlighted countries have universities in PitchBook's ranking.</p>
           </div>
         </article>
       </section>
