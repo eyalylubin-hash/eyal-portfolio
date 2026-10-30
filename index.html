@@ -23,10 +23,12 @@
     .nav { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:26px; font-size:13px; font-weight:540; }
     .nav a { text-decoration:none; }
     .nav a:hover { text-decoration:underline; }
-    .intro { padding:90px 0 100px; display:grid; grid-template-columns: 1fr 1.15fr; gap:44px; align-items:start; }
-    .intro h1 { margin:0; font-size:clamp(48px,6.4vw,76px); line-height:1.05; font-weight:550; letter-spacing:-.065em; }
-    .intro .lede { margin:2px 0 0; font-size:clamp(18px,2.05vw,22px); letter-spacing:-.025em; line-height:1.55; }
+    .intro { padding:88px 0 100px; display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,310px); gap:68px; align-items:center; }
+    .intro h1 { margin:0 0 26px; font-size:clamp(48px,6.4vw,76px); line-height:1.05; font-weight:550; letter-spacing:-.065em; }
+    .intro .lede { margin:0; font-size:clamp(18px,2.05vw,22px); letter-spacing:-.025em; line-height:1.55; }
     .intro .detail { margin:21px 0 0; font-size:14px; color:var(--secondary); }
+    .intro-portrait { display:block; width:100%; max-width:310px; aspect-ratio:4/5; object-fit:cover; object-position:center; border-radius:5px; justify-self:end; background:#e4e4e2; }
+    @media(max-width:900px) and (min-width:761px) { .intro { gap:34px; grid-template-columns:minmax(0,1fr) 255px; } .intro h1 { font-size:clamp(49px,6vw,66px); } }
     .section-heading { padding:21px 0 0; border-top:1px solid var(--line); font-size:13px; font-weight:650; letter-spacing:.03em; }
     .project { display:grid; grid-template-columns:200px minmax(0,1fr); gap:38px; padding:62px 0 70px; border-bottom:1px solid var(--line); }
     .project h2 { font-size:27px; line-height:1.2; letter-spacing:-.04em; font-weight:620; margin:0 0 10px; }
@@ -57,9 +59,10 @@
       .wrap { padding:0 22px; }
       .topbar { padding:21px 0; }
       .nav { gap:17px; font-size:12px; }
-      .intro { grid-template-columns:1fr; padding:70px 0 75px; gap:26px; }
-      .intro h1 { font-size:clamp(48px,11vw,64px); }
+      .intro { grid-template-columns:1fr; padding:68px 0 75px; gap:30px; }
+      .intro h1 { font-size:clamp(48px,11vw,64px); margin-bottom:21px; }
       .intro .lede { font-size:19px; }
+      .intro-portrait { justify-self:start; max-width:280px; }
       .project, .about { grid-template-columns:1fr; gap:22px; }
       .project { padding:46px 0 55px; }
       .project .links { gap:8px 19px; }
@@ -105,11 +108,12 @@
     </header>
     <main id="main">
       <section class="intro" aria-labelledby="intro-title">
-        <h1 id="intro-title">Hi, I'm Eyal.</h1>
-        <div>
+        <div class="intro-copy">
+          <h1 id="intro-title">Hi, I'm Eyal.</h1>
           <p class="lede">I'm a senior at Penn studying Cognitive Science and PPE. I'm interested in how people think, and I like building things that make everyday problems a little easier.</p>
           <p class="detail">Based in Philadelphia · Graduating May 2027</p>
         </div>
+        <img class="intro-portrait" src="assets/headshot.jpg" alt="Portrait of Eyal Lubin" width="310" height="388" fetchpriority="high" decoding="async">
       </section>
       <section id="work" aria-labelledby="work-heading">
         <h2 class="section-heading" id="work-heading">Selected work</h2>
