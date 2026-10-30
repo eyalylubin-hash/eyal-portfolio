@@ -1,0 +1,39 @@
+name: Update last podcast
+
+on:
+  schedule:
+    # Every 15 minutes, offset to avoid the busy start of each hour (UTC).
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: spotify-last-podcast
+  cancel-in-progress: false
+
+jobs:
+  check-spotify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check currently playing episode
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+        run: node scripts/update-podcast.mjs
+      - name: Publish new podcast when changed
+        run: |
+          if ! git diff --quiet -- data/last-podcast.json; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add data/last-podcast.json
+            git commit -m 'Update last podcast episode'
+            git push
+          else
+            echo 'No new podcast episode.'
+          fi
