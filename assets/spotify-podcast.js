@@ -60,7 +60,7 @@
 
   const css = document.createElement('style');
   css.textContent = `
-    .spotify-story { margin-top:25px; padding-top:16px; border-top:1px solid var(--line,#d9d9d4); }
+    .spotify-story { margin-top:12px; padding-top:0; border-top:0; }    
     .spotify-story summary { display:block; list-style:none; cursor:pointer; color:var(--secondary,#646761); font-size:13px; line-height:1.65; font-weight:400; }
     .spotify-story summary::-webkit-details-marker { display:none; }
     .spotify-story summary:focus-visible { outline:2px solid var(--ink,#222321); outline-offset:4px; }
