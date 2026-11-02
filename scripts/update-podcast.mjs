@@ -35,6 +35,12 @@ const playing = await requestJson(
   { headers: { Authorization: `Bearer ${token.access_token}` } }
 );
 const item = playing?.item;
+console.log('Spotify response:', {
+  hasPlayback: Boolean(playing),
+  isPlaying: playing?.is_playing,
+  type: playing?.currently_playing_type,
+  itemType: item?.type
+});
 if (!playing?.is_playing || item?.type !== 'episode') {
   console.log('No podcast playing: music, ads, and silence do not overwrite the last episode.');
   process.exit(0);
