@@ -41,7 +41,7 @@ console.log('Spotify response:', {
   type: playing?.currently_playing_type,
   itemType: item?.type
 });
-if (!playing?.is_playing || item?.type !== 'episode') {
+if (item?.type !== 'episode') {
   console.log('No podcast playing: music, ads, and silence do not overwrite the last episode.');
   process.exit(0);
 }
