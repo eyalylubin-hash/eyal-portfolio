@@ -85,7 +85,7 @@
   const details = document.createElement('details');
   details.className = 'spotify-story';
   details.innerHTML = `
-    <summary>Yes, it updates automatically. <span class="story-link">Here's how I built it.</span></summary>
+    <summary>Yes, it updates automatically :)  <span class="story-link">Here's how.</span></summary>
     <div class="story-body">
       <h3 class="story-title">How I built this</h3>
       <p>I wanted my portfolio to show the most recent podcast I'd listened to, without having to update it myself. I started by creating a Spotify developer app and connecting it to a GitHub Actions workflow that checked Spotify every 30 minutes.</p>
